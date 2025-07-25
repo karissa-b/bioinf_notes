@@ -1,10 +1,11 @@
-## Blog Post Title From First Header
+## Downloading data from sra to HPC
 
-Due to a plugin called `jekyll-titles-from-headings` which is supported by GitHub Pages by default. The above header (in the markdown file) will be automatically used as the pages title.
+Trying out this blog thing, so pls be nice 
 
-If the file does not start with a header, then the post title will be derived from the filename.
+First, obtain the data you want from sra run selector
 
-This is a sample blog post. You can talk about all sorts of fun things here.
+<img width="1658" height="628" alt="image" src="https://github.com/user-attachments/assets/b6e3b02e-2b97-4954-8990-92ee867fff84" />
+
 
 ---
 
