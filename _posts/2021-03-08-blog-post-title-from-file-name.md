@@ -1,33 +1,43 @@
-## Downloading data from sra to HPC
+## Downloading 10X genomics data from sra to HPC
 
 Trying out this blog thing, so pls be nice 
 
-First, obtain the data you want from sra run selector
 
-<img width="1658" height="628" alt="image" src="https://github.com/user-attachments/assets/b6e3b02e-2b97-4954-8990-92ee867fff84" />
+First, obtain the data you want from sra run selector. you can filter the dataset to select the particular samples you want. 
 
+<img width="819" height="436" alt="image" src="https://github.com/user-attachments/assets/3b4d2acd-d15b-4f02-884a-8e7480ea8f62" />
 
----
+For the samples you want, you need to download a txt file with the accessions you want to analyse. this is done in the select part of the sra run selector. 
 
-### This is a header
+<img width="656" height="159" alt="image" src="https://github.com/user-attachments/assets/b16f2dfe-59b1-469d-b3c7-bb7b1c60eb15" />
 
-#### Some T-SQL Code
+the file should look something like this
 
-```tsql
-SELECT This, [Is], A, Code, Block -- Using SSMS style syntax highlighting
-    , REVERSE('abc')
-FROM dbo.SomeTable s
-    CROSS JOIN dbo.OtherTable o;
+```
+karissabarthelson@Karissas-MacBook-Pro:$ head sra.txt
+SRR32125183
+SRR32125184
+SRR32125185
+SRR32125186
+SRR32125187
 ```
 
-#### Some PowerShell Code
+put this file in the working directory of the HPC. 
 
-```powershell
-Write-Host "This is a powershell Code block";
+if your HPC has internet access on the compute nodes, probs should let the compute node do it. but some HPCs dont have  access to the internet on the server, so just do it on the login/head node. 
 
-# There are many other languages you can use, but the style has to be loaded first
+next, we should prefetch the data. this is faster than running fastq-dump. 
 
-ForEach ($thing in $things) {
-    Write-Output "It highlights it using the GitHub style"
-}
 ```
+# prefetch the sra data
+prefetch --option-file sra.txt
+
+# loop over the SRA IDs in sra.txt to extract the fq files
+# make sure to change to -O to the relevant outdir
+while read -r SRA_ID; do
+    echo "Processing $SRA_ID"
+    fastq-dump --split-files --gzip "${SRA_ID}/${SRA_ID}.sra" -O "/hpcfs/users/a1211024/2025_twimicemyloid/01_rawdata/fastq"
+done < sra.txt
+```
+
+
