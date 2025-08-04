@@ -36,8 +36,25 @@ prefetch --option-file sra.txt
 # make sure to change to -O to the relevant outdir
 while read -r SRA_ID; do
     echo "Processing $SRA_ID"
-    fastq-dump --split-files --gzip "${SRA_ID}/${SRA_ID}.sra" -O "/hpcfs/users/a1211024/2025_twimicemyloid/01_rawdata/fastq"
+    fastq-dump --split-files --gzip "${SRA_ID}/${SRA_ID}.sra" -O "/path/to/folder/01_rawdata/fastq"
 done < sra.txt
 ```
+
+Now you have the fastq files. However, they are named in this convention: 
+
+```
+SRR32125230_1.fastq.gz
+SRR32125230_2.fastq.gz
+SRR32125230_3.fastq.gz
+SRR32125230_4.fastq.gz
+```
+
+Cellranger needs the files to be named in this way:
+
+<SampleName>_S<SampleNumber>_L00<Lane>_<Read>_001.fastq.gz
+
+When we look at the run in SRA, we see 4 reads per sample
+
+
 
 
